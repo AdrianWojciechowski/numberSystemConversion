@@ -13,12 +13,13 @@
 LiquidCrystal lcd(8, 9, 4, 5, 6, 7); //(Rs, E, D4, D5, D6, D7)
 
 void setup() {
-  lcd.begin(16,2);  //Initialize screen size
-  pinMode(BUTTON1, INPUT);
+  lcd.begin(16,2);                   //Initialize screen size
+  pinMode(BUTTON1, INPUT);           //Initialize input buttons
   pinMode(BUTTON2, INPUT);
   pinMode(BUTTON3, INPUT);
   pinMode(BUTTON4, INPUT);
-  lcd.print("Adrian");
+  lcd.clear();                       //Alway clear at the beggining to avoid unwanted characters on screen.
+  lcd.print("Adrian");               //Welcome screen.
   lcd.setCursor(0,1);
   lcd.print("Wojciechowski");
   delay(3000);
@@ -35,19 +36,23 @@ void loop() {
     lcd.print(valuate(n, convTo));
     if (digitalRead(BUTTON1) == LOW && n < 65536) n++;
     else if (digitalRead(BUTTON2) == LOW && n > 0) n--;
-    else if (digitalRead(BUTTON3) == LOW && convTo < 61) convTo++;
+    else if (digitalRead(BUTTON3) == LOW && convTo < 10) convTo++;
     else if (digitalRead(BUTTON4) == LOW && convTo > 2) convTo--;
     delay(100);
   }
 }
 
+// Calculating convertion to string.
 String valuate(unsigned int n, int convTo) {
   String result = "";
+  // Calculating from first to before the last one position
   while (n >= convTo) {
     result += (n%convTo);
     n /= convTo;
   }
+  // Copying last position
   result += n;
+  // Reverse string
   for (int i = 0; i < result.length()/2; i++) {
     char temp = result[i];
     result[i] = result[result.length()-1-i];
